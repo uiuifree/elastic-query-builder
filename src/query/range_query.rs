@@ -20,19 +20,19 @@ impl RangeQuery {
         v.field = field.to_string();
         return v;
     }
-    pub fn gt(&mut self, value: String)->&RangeQuery {
+    pub fn gt(mut self, value: String)->RangeQuery {
         self.gt = value;
         return self;
     }
-    pub fn lt(&mut self, value: String)->&RangeQuery {
+    pub fn lt(mut self, value: String)->RangeQuery {
         self.lt = value;
         return self;
     }
-    pub fn gte(&mut self, value: String)->&RangeQuery {
+    pub fn gte(mut self, value: String)->RangeQuery {
         self.gte = value;
         return self;
     }
-    pub fn lte(&mut self, value: String)->&RangeQuery {
+    pub fn lte(mut self, value: String)->RangeQuery {
         self.gte = value;
         return self;
     }
