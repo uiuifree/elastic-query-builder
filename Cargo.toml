@@ -1,11 +1,12 @@
 [package]
 name = "elastic-query-builder"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["uiuifree"]
 description = "ElasticSearch Query Builder"
 license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+repository="https://github.com/uiuifree/elastic-query-builder"
 
 [dependencies]
 serde = "1.0"
