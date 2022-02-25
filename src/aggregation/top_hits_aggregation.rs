@@ -112,9 +112,7 @@ mod tests {
 
     #[test]
     fn test_terms_aggregation() {
-        let agg = TopHitsAggregation::new("hoge")
-            .add_sort("hoge", "asc");
-
+        let agg = TopHitsAggregation::new("hoge");
 
         let json = agg.build();
         println!("{}", json);

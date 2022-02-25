@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
 use serde_json::{json, Value};
@@ -101,8 +100,7 @@ mod tests {
 
     #[test]
     fn test_terms_aggregation() {
-        let agg = SumAggregation::new("hoge")
-            .add_sort("hoge", "asc");
+        let agg = SumAggregation::new("hoge");
 
 
         let json = agg.build();
