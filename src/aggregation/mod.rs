@@ -3,7 +3,6 @@ mod top_hits_aggregation;
 mod sum_aggregation;
 mod max_aggregation;
 mod min_aggregation;
-mod multi_terms_aggregation;
 
 use serde_json::Value;
 use crate::aggregation::max_aggregation::MaxAggregation;
