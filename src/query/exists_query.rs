@@ -38,6 +38,6 @@ mod tests {
 
     #[test]
     fn build() {
-        assert_eq!(ExistsQuery::new("id").build(), "{\"exists\":{\"field\":\"id\"}}");
+        assert_eq!(ExistsQuery::new("id").build().to_string(), "{\"exists\":{\"field\":\"id\"}}");
     }
 }

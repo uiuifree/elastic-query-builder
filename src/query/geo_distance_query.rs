@@ -65,8 +65,8 @@ mod tests {
     #[test]
     fn build() {
         assert_eq!(
-            GeoDistanceQuery::new("id", Geo::new(35.68944, 139.69167), "10km").build(),
-            "{\"geo_distance\":{\"distance\":\"10km\",\"field\":{\"lat\":\"35.68944\",\"lon\":\"139.69167\"}}}"
+            GeoDistanceQuery::new("id", Geo::new(35.68944, 139.69167), "10km").build().to_string(),
+            "{\"geo_distance\":{\"distance\":\"10km\",\"id\":{\"lat\":\"35.68944\",\"lon\":\"139.69167\"}}}"
         );
     }
 }
