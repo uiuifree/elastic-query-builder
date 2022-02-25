@@ -89,13 +89,12 @@ impl Serialize for QueryBuilder {
     {
         let mut state = serializer.serialize_struct("QueryBuilder", 0)?;
         if !self.source.is_empty() {
-            state.serialize_field("_source", &self.source);
+            let _ = state.serialize_field("_source", &self.source);
         }
-        let mut query = self.query.clone();
         if self.query.is_null() || self.query.to_string().is_empty() {
-            state.serialize_field("query", &json!({"match_all":{}}));
+            let _ = state.serialize_field("query", &json!({"match_all":{}}));
         } else {
-            state.serialize_field("query", &self.query);
+            let _ = state.serialize_field("query", &self.query);
         }
         state.end()
     }

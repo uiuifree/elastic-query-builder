@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
 use serde_json::{json, Value};
@@ -20,19 +19,19 @@ impl RangeQuery {
         v.field = field.to_string();
         return v;
     }
-    pub fn gt(mut self, value: String)->RangeQuery {
+    pub fn gt(mut self, value: String) -> RangeQuery {
         self.gt = value;
         return self;
     }
-    pub fn lt(mut self, value: String)->RangeQuery {
+    pub fn lt(mut self, value: String) -> RangeQuery {
         self.lt = value;
         return self;
     }
-    pub fn gte(mut self, value: String)->RangeQuery {
+    pub fn gte(mut self, value: String) -> RangeQuery {
         self.gte = value;
         return self;
     }
-    pub fn lte(mut self, value: String)->RangeQuery {
+    pub fn lte(mut self, value: String) -> RangeQuery {
         self.gte = value;
         return self;
     }
@@ -45,16 +44,16 @@ impl Serialize for RangeQuery {
     {
         let mut state = serializer.serialize_struct("RangeQuery", 0)?;
         if !self.gt.is_empty() {
-            state.serialize_field("gt", &self.gt);
+            let _ = state.serialize_field("gt", &self.gt);
         }
         if !self.lt.is_empty() {
-            state.serialize_field("lt", &self.lt);
+            let _ = state.serialize_field("lt", &self.lt);
         }
         if !self.gte.is_empty() {
-            state.serialize_field("gte", &self.gte);
+            let _ = state.serialize_field("gte", &self.gte);
         }
         if !self.lte.is_empty() {
-            state.serialize_field("lte", &self.lte);
+            let _ = state.serialize_field("lte", &self.lte);
         }
         state.end()
     }

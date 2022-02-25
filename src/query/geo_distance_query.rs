@@ -43,7 +43,7 @@ impl QueryTrait for GeoDistanceQuery {
         json!({
             name: {
                 "distance":distance,
-                "field":{
+                field:{
                         "lat" : lat,
                         "lon" : lon,
                     }

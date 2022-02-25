@@ -38,13 +38,13 @@ impl Serialize for MultiMatchQuery {
             S: Serializer,
     {
         let mut state = serializer.serialize_struct("MultiMatchQuery", 0)?;
-        state.serialize_field("query", &self.query);
-        state.serialize_field("fields", &self.fields);
+        let _ = state.serialize_field("query", &self.query);
+        let _ = state.serialize_field("fields", &self.fields);
         if !self.search_type.is_empty() {
-            state.serialize_field("type", &self.search_type);
+            let _ = state.serialize_field("type", &self.search_type);
         }
         if !self.fuzziness.is_empty() {
-            state.serialize_field("fuzziness", &self.fuzziness);
+            let _ = state.serialize_field("fuzziness", &self.fuzziness);
         }
         state.end()
     }

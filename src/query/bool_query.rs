@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 
 use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
@@ -45,16 +44,16 @@ impl Serialize for BoolQuery {
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         if !self.must.is_empty() {
-            state.serialize_field("must", &self.must);
+            let _ = state.serialize_field("must", &self.must);
         }
         if !self.must_not.is_empty() {
-            state.serialize_field("must_not", &self.must_not);
+            let _ = state.serialize_field("must_not", &self.must_not);
         }
         if !self.should.is_empty() {
-            state.serialize_field("should", &self.should);
+            let _ = state.serialize_field("should", &self.should);
         }
         if !self.filter.is_empty() {
-            state.serialize_field("filter", &self.filter);
+            let _ = state.serialize_field("filter", &self.filter);
         }
         state.end()
     }
