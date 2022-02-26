@@ -8,7 +8,7 @@ use crate::query::QueryTrait;
 
 pub mod query;
 pub mod aggregation;
-#[macro_use]
+// #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
 
