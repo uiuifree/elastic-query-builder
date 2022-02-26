@@ -1,5 +1,3 @@
-[GitHub Page](https://github.com/uiuifree/elastic-query-builder)
-
 # example
 
 ```
