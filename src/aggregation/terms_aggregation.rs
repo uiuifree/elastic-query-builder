@@ -11,7 +11,7 @@ pub struct TermsAggregation {
     aggregation: Value,
 }
 
-#[derive(Default, Serialize, Clone)]
+#[derive(Default, Clone)]
 struct TermsOrder {
     order_field: String,
     order_value: String,
@@ -84,7 +84,7 @@ impl Serialize for TermsValue {
         }
 
         if self.order.is_some() {
-            state.serialize_field("order", &self.order)?;
+            state.serialize_field("order", &self.order.as_ref().unwrap())?;
         }
         if !self.include.is_empty() {
             state.serialize_field("include", &self.include)?;
@@ -92,6 +92,19 @@ impl Serialize for TermsValue {
         if !self.exclude.is_empty() {
             state.serialize_field("exclude", &self.exclude)?;
         }
+        state.end()
+    }
+}
+
+impl Serialize for TermsOrder {
+    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
+        where
+            S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("TermsOrder", 0)?;
+
+        state.serialize_field("order_field", &self.order_field)?;
+        state.serialize_field("order_value", &self.order_value)?;
         state.end()
     }
 }
