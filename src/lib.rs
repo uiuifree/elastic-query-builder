@@ -1,5 +1,7 @@
 extern crate core;
 
+use std::process::exit;
+use std::thread::sleep;
 use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
 use serde_json::{json, Value};
@@ -8,6 +10,7 @@ use crate::query::QueryTrait;
 
 pub mod query;
 pub mod aggregation;
+
 // #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
@@ -52,9 +55,17 @@ impl QueryBuilder {
         self.query = query;
         return self;
     }
-    pub fn set_aggregation<T>(&mut self, query: T) -> &QueryBuilder
+    pub fn set_aggregation<T>(&mut self, query: Vec<T>) -> &QueryBuilder
         where T: AggregationTrait {
-        self.aggs = query.build();
+        let mut values = Value::default();
+
+        for q in query {
+            merge(&mut values, &q.build());
+        }
+
+
+        self.aggs = json!(values);
+        println!("{:?}", self.aggs);
         return self;
     }
 
@@ -109,9 +120,22 @@ impl Serialize for QueryBuilder {
         } else {
             let _ = state.serialize_field("query", &self.query);
         }
-       if !(self.aggs.is_null() || self.query.to_string().is_empty()) {
-           let _ = state.serialize_field("aggs", &self.aggs);
+        if !(self.aggs.is_null() || self.query.to_string().is_empty()) {
+            let _ = state.serialize_field("aggs", &self.aggs);
         }
         state.end()
+    }
+}
+
+fn merge(a: &mut Value, b: &Value) {
+    match (a, b) {
+        (&mut Value::Object(ref mut a), &Value::Object(ref b)) => {
+            for (k, v) in b {
+                merge(a.entry(k.clone()).or_insert(Value::Null), v);
+            }
+        }
+        (a, b) => {
+            *a = b.clone();
+        }
     }
 }
