@@ -1,7 +1,7 @@
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::aggregation::AggregationTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct SumAggregation {
@@ -38,7 +38,10 @@ impl SumAggregation {
         self.value.missing = missing;
         self
     }
-    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self where T: AggregationTrait {
+    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
+    where
+        T: AggregationTrait,
+    {
         self.aggregation = aggregation.build();
         self
     }
@@ -46,8 +49,8 @@ impl SumAggregation {
 
 impl Serialize for SumValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("SumValue", 0)?;
 
@@ -63,8 +66,8 @@ impl Serialize for SumValue {
 
 impl Serialize for SumAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("SumAggregation", 0)?;
         state.serialize_field("sum", &self.value)?;
@@ -75,7 +78,6 @@ impl Serialize for SumAggregation {
     }
 }
 
-
 impl AggregationTrait for SumAggregation {
     fn name(&self) -> &str {
         self.name.as_str()
@@ -83,9 +85,7 @@ impl AggregationTrait for SumAggregation {
 
     fn build(&self) -> Value {
         let name = self.name.to_string();
-        json!({
-            name : self
-        })
+        json!({ name: self })
     }
 
     fn query_name(&self) -> String {
@@ -101,7 +101,6 @@ mod tests {
     #[test]
     fn test_terms_aggregation() {
         let agg = SumAggregation::new("hoge");
-
 
         let json = agg.build();
         println!("{}", json);

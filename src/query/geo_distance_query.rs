@@ -1,5 +1,5 @@
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct GeoDistanceQuery {
@@ -16,10 +16,7 @@ pub struct Geo {
 
 impl Geo {
     pub fn new(lat: f64, lon: f64) -> Geo {
-        Geo {
-            lat,
-            lon,
-        }
+        Geo { lat, lon }
     }
 }
 
@@ -55,7 +52,6 @@ impl QueryTrait for GeoDistanceQuery {
         return "geo_distance".to_string();
     }
 }
-
 
 #[cfg(test)]
 mod tests {

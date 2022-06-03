@@ -1,22 +1,21 @@
-mod terms_aggregation;
-mod top_hits_aggregation;
-mod sum_aggregation;
 mod max_aggregation;
 mod min_aggregation;
+mod sum_aggregation;
+mod terms_aggregation;
+mod top_hits_aggregation;
 
-use serde_json::Value;
 use crate::aggregation::max_aggregation::MaxAggregation;
 use crate::aggregation::min_aggregation::MinAggregation;
 use crate::aggregation::sum_aggregation::SumAggregation;
 use crate::aggregation::terms_aggregation::TermsAggregation;
 use crate::aggregation::top_hits_aggregation::TopHitsAggregation;
+use serde_json::Value;
 
 pub trait AggregationTrait {
     fn name(&self) -> &str;
     fn build(&self) -> Value;
     fn query_name(&self) -> String;
 }
-
 
 pub struct Aggregation {}
 

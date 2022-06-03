@@ -1,7 +1,7 @@
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::aggregation::AggregationTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct TermsAggregation {
@@ -63,7 +63,10 @@ impl TermsAggregation {
         self.value.exclude = exclude.to_string();
         self
     }
-    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self where T: AggregationTrait {
+    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
+    where
+        T: AggregationTrait,
+    {
         self.aggregation = aggregation.build();
         self
     }
@@ -71,8 +74,8 @@ impl TermsAggregation {
 
 impl Serialize for TermsValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsBuilder", 0)?;
 
@@ -98,8 +101,8 @@ impl Serialize for TermsValue {
 
 impl Serialize for TermsOrder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsOrder", 0)?;
 
@@ -111,8 +114,8 @@ impl Serialize for TermsOrder {
 
 impl Serialize for TermsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         state.serialize_field("terms", &self.value)?;
@@ -142,9 +145,7 @@ impl AggregationTrait for TermsAggregation {
 
     fn build(&self) -> Value {
         let name = self.name.to_string();
-        json!({
-            name : self
-        })
+        json!({ name: self })
     }
 
     fn query_name(&self) -> String {

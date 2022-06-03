@@ -1,9 +1,9 @@
 use serde_json::Value;
 
-pub mod match_query;
 pub mod bool_query;
 pub mod exists_query;
 pub mod geo_distance_query;
+pub mod match_query;
 pub mod multi_match_query;
 pub mod range_query;
 pub mod term_query;

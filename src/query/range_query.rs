@@ -1,7 +1,7 @@
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct RangeQuery {
@@ -11,7 +11,6 @@ pub struct RangeQuery {
     lte: String,
     gte: String,
 }
-
 
 impl RangeQuery {
     pub fn new(field: &str) -> RangeQuery {
@@ -39,8 +38,8 @@ impl RangeQuery {
 
 impl Serialize for RangeQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("RangeQuery", 0)?;
         if !self.gt.is_empty() {

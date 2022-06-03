@@ -1,15 +1,13 @@
 extern crate core;
 
-use std::process::exit;
-use std::thread::sleep;
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::aggregation::AggregationTrait;
 use crate::query::QueryTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
 
-pub mod query;
 pub mod aggregation;
+pub mod query;
 
 // #[macro_use]
 extern crate serde_derive;
@@ -47,7 +45,9 @@ impl QueryBuilder {
         return val;
     }
     pub fn set_query<T>(&mut self, query: T) -> &QueryBuilder
-        where T: QueryTrait {
+    where
+        T: QueryTrait,
+    {
         self.query = query.build();
         return self;
     }
@@ -56,7 +56,9 @@ impl QueryBuilder {
         return self;
     }
     pub fn set_aggregation<T>(&mut self, query: Vec<T>) -> &QueryBuilder
-        where T: AggregationTrait {
+    where
+        T: AggregationTrait,
+    {
         let mut values = Value::default();
 
         for q in query {
@@ -65,7 +67,6 @@ impl QueryBuilder {
         self.aggs = json!(values);
         return self;
     }
-
 
     pub fn set_size(&mut self, size: i64) -> &QueryBuilder {
         self.size = size;
@@ -96,17 +97,14 @@ impl QueryBuilder {
     }
 
     pub fn build(&self) -> Value {
-        json!(
-           self
-        )
+        json!(self)
     }
 }
 
-
 impl Serialize for QueryBuilder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("QueryBuilder", 0)?;
         if !self.source.is_empty() {

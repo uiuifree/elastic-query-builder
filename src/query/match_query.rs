@@ -1,5 +1,5 @@
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct MatchQuery {

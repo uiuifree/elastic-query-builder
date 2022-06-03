@@ -1,6 +1,5 @@
-
-use serde::{Serialize, Serializer};
 use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
 
 use crate::query::QueryTrait;
@@ -17,13 +16,22 @@ impl BoolQuery {
     pub fn new() -> BoolQuery {
         BoolQuery::default()
     }
-    pub fn add_must<T>(&mut self, value: T) where T: QueryTrait {
+    pub fn add_must<T>(&mut self, value: T)
+    where
+        T: QueryTrait,
+    {
         self.must.push(value.build());
     }
-    pub fn add_must_not<T>(&mut self, value: T) where T: QueryTrait {
+    pub fn add_must_not<T>(&mut self, value: T)
+    where
+        T: QueryTrait,
+    {
         self.must_not.push(value.build());
     }
-    pub fn add_should<T>(&mut self, value: T) where T: QueryTrait {
+    pub fn add_should<T>(&mut self, value: T)
+    where
+        T: QueryTrait,
+    {
         self.should.push(value.build());
     }
     pub fn add_filter(&mut self, value: Value) {
@@ -39,8 +47,8 @@ impl BoolQuery {
 
 impl Serialize for BoolQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         if !self.must.is_empty() {
@@ -62,9 +70,7 @@ impl Serialize for BoolQuery {
 impl QueryTrait for BoolQuery {
     fn build(&self) -> Value {
         let name = self.query_name();
-        json!({
-            name: self
-        })
+        json!({ name: self })
     }
     fn query_name(&self) -> String {
         return "bool".to_string();

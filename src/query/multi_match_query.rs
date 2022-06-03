@@ -1,7 +1,7 @@
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct MultiMatchQuery {
@@ -34,8 +34,8 @@ impl MultiMatchQuery {
 
 impl Serialize for MultiMatchQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("MultiMatchQuery", 0)?;
         let _ = state.serialize_field("query", &self.query);
@@ -53,9 +53,7 @@ impl Serialize for MultiMatchQuery {
 impl QueryTrait for MultiMatchQuery {
     fn build(&self) -> Value {
         let name = self.query_name();
-         json!({
-            name: self
-        })
+        json!({ name: self })
     }
     fn query_name(&self) -> String {
         return "multi_match".to_string();

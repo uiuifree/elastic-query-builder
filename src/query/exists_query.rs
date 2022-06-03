@@ -1,5 +1,5 @@
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct ExistsQuery {
@@ -30,7 +30,6 @@ impl QueryTrait for ExistsQuery {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::query::exists_query::ExistsQuery;
@@ -38,6 +37,9 @@ mod tests {
 
     #[test]
     fn build() {
-        assert_eq!(ExistsQuery::new("id").build().to_string(), "{\"exists\":{\"field\":\"id\"}}");
+        assert_eq!(
+            ExistsQuery::new("id").build().to_string(),
+            "{\"exists\":{\"field\":\"id\"}}"
+        );
     }
 }

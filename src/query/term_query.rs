@@ -1,5 +1,5 @@
-use serde_json::{json, Value};
 use crate::query::QueryTrait;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct TermQuery {
@@ -20,9 +20,7 @@ impl QueryTrait for TermQuery {
     fn build(&self) -> Value {
         let field = self.field.to_string();
         let query = self.value.to_string();
-        json!({
-            field:query
-        })
+        json!({ field: query })
     }
 
     fn query_name(&self) -> String {

@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-use serde::{Serialize, Serializer};
-use serde::ser::SerializeStruct;
-use serde_json::{json, Value};
 use crate::aggregation::AggregationTrait;
+use serde::ser::SerializeStruct;
+use serde::{Serialize, Serializer};
+use serde_json::{json, Value};
+use std::collections::HashMap;
 
 #[derive(Default)]
 pub struct TopHitsAggregation {
@@ -39,7 +39,10 @@ impl TopHitsAggregation {
         self.value.script = script.to_string();
         self
     }
-    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self where T: AggregationTrait {
+    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
+    where
+        T: AggregationTrait,
+    {
         self.aggregation = aggregation.build();
         self
     }
@@ -47,8 +50,8 @@ impl TopHitsAggregation {
 
 impl Serialize for TopHitsValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TopHitsBuilder", 0)?;
 
@@ -74,8 +77,8 @@ impl Serialize for TopHitsValue {
 
 impl Serialize for TopHitsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TopHitsAggregation", 0)?;
         state.serialize_field("top_hits", &self.value)?;
@@ -87,7 +90,6 @@ impl Serialize for TopHitsAggregation {
     }
 }
 
-
 impl AggregationTrait for TopHitsAggregation {
     fn name(&self) -> &str {
         self.name.as_str()
@@ -95,9 +97,7 @@ impl AggregationTrait for TopHitsAggregation {
 
     fn build(&self) -> Value {
         let name = self.name.to_string();
-        json!({
-            name : self
-        })
+        json!({ name: self })
     }
 
     fn query_name(&self) -> String {
