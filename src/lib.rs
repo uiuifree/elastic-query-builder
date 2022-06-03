@@ -62,10 +62,7 @@ impl QueryBuilder {
         for q in query {
             merge(&mut values, &q.build());
         }
-
-
         self.aggs = json!(values);
-        println!("{:?}", self.aggs);
         return self;
     }
 
