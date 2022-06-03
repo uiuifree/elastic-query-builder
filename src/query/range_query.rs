@@ -32,7 +32,7 @@ impl RangeQuery {
         return self;
     }
     pub fn lte(mut self, value: String) -> RangeQuery {
-        self.gte = value;
+        self.lte = value;
         return self;
     }
 }
