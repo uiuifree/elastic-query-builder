@@ -20,7 +20,7 @@ pub struct QueryBuilder {
     size: i64,
     from: i64,
     scroll: String,
-    sort: Vec<Value>,
+    sort: Value,
     source: Vec<String>,
 }
 
@@ -81,7 +81,7 @@ impl QueryBuilder {
         self.scroll = value.to_string();
         return self;
     }
-    pub fn set_sort(&mut self, value: Vec<Value>) -> &QueryBuilder {
+    pub fn set_sort(&mut self, value: Value) -> &QueryBuilder {
         self.sort = value;
         return self;
     }
@@ -100,8 +100,8 @@ impl QueryBuilder {
     pub fn get_from(&self) -> i64 {
         self.from.clone()
     }
-    pub fn get_sort(&self) -> Vec<Value> {
-        self.sort.clone()
+    pub fn get_sort(&self) -> &Value {
+        &self.sort
     }
 
     pub fn build(&self) -> Value {
@@ -125,6 +125,9 @@ impl Serialize for QueryBuilder {
         }
         if !(self.aggs.is_null() || self.query.to_string().is_empty()) {
             let _ = state.serialize_field("aggs", &self.aggs);
+        }
+        if !(self.sort.is_null() || self.sort.to_string().is_empty()) {
+            let _ = state.serialize_field("sort", &self.sort);
         }
         state.end()
     }
