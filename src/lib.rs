@@ -20,6 +20,7 @@ pub struct QueryBuilder {
     size: i64,
     from: i64,
     scroll: String,
+    sort: Vec<Value>,
     source: Vec<String>,
 }
 
@@ -80,7 +81,11 @@ impl QueryBuilder {
         self.scroll = value.to_string();
         return self;
     }
-    pub fn set_source(&mut self, value: Vec<String>) -> &QueryBuilder {
+    pub fn set_sort(&mut self, value: Vec<Value>) -> &QueryBuilder {
+        self.sort = value;
+        return self;
+    }
+  pub fn set_source(&mut self, value: Vec<String>) -> &QueryBuilder {
         self.source = value;
         return self;
     }
@@ -94,6 +99,9 @@ impl QueryBuilder {
 
     pub fn get_from(&self) -> i64 {
         self.from.clone()
+    }
+    pub fn get_sort(&self) -> Vec<Value> {
+        self.sort.clone()
     }
 
     pub fn build(&self) -> Value {
