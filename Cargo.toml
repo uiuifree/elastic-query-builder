@@ -1,6 +1,6 @@
 [package]
 name = "elastic-query-builder"
-version = "0.1.7"
+version = "0.1.8"
 edition = "2021"
 authors = ["uiuifree"]
 description = "ElasticSearch Query Builder"
