@@ -22,6 +22,7 @@ pub struct QueryBuilder {
     scroll: String,
     sort: Value,
     source: Vec<String>,
+    script: Value,
 }
 
 /// # example
@@ -46,8 +47,8 @@ impl QueryBuilder {
         return val;
     }
     pub fn set_query<T>(&mut self, query: T) -> &QueryBuilder
-    where
-        T: QueryTrait,
+        where
+            T: QueryTrait,
     {
         self.query = query.build();
         return self;
@@ -57,8 +58,8 @@ impl QueryBuilder {
         return self;
     }
     pub fn set_aggregation<T>(&mut self, query: Vec<T>) -> &QueryBuilder
-    where
-        T: AggregationTrait,
+        where
+            T: AggregationTrait,
     {
         let mut values = Value::default();
 
@@ -85,8 +86,12 @@ impl QueryBuilder {
         self.sort = value;
         return self;
     }
-  pub fn set_source(&mut self, value: Vec<String>) -> &QueryBuilder {
+    pub fn set_source(&mut self, value: Vec<String>) -> &QueryBuilder {
         self.source = value;
+        return self;
+    }
+    pub fn set_script(&mut self, value: Value) -> &QueryBuilder {
+        self.script = value;
         return self;
     }
 
@@ -103,6 +108,9 @@ impl QueryBuilder {
     pub fn get_sort(&self) -> &Value {
         &self.sort
     }
+    pub fn get_script(&self) -> &Value {
+        &self.script
+    }
 
     pub fn build(&self) -> Value {
         json!(self)
@@ -111,8 +119,8 @@ impl QueryBuilder {
 
 impl Serialize for QueryBuilder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("QueryBuilder", 0)?;
         if !self.source.is_empty() {
@@ -125,6 +133,9 @@ impl Serialize for QueryBuilder {
         }
         if !(self.aggs.is_null() || self.query.to_string().is_empty()) {
             let _ = state.serialize_field("aggs", &self.aggs);
+        }
+        if !(self.script.is_null() || self.script.to_string().is_empty()) {
+            let _ = state.serialize_field("script", &self.script);
         }
         if !(self.sort.is_null() || self.sort.to_string().is_empty()) {
             let _ = state.serialize_field("sort", &self.sort);
