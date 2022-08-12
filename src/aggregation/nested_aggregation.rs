@@ -17,7 +17,7 @@ struct NestedValue {
 
 impl NestedAggregation {
     pub fn new(name: &str) -> Self {
-        let mut term = NestedAggregation {
+        let  term = NestedAggregation {
             name: name.to_string(),
             ..Default::default()
         };
