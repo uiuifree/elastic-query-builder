@@ -4,6 +4,7 @@ mod sum_aggregation;
 mod terms_aggregation;
 mod top_hits_aggregation;
 mod nested_aggregation;
+mod filter_aggregation;
 
 use crate::aggregation::max_aggregation::MaxAggregation;
 use crate::aggregation::min_aggregation::MinAggregation;
@@ -11,6 +12,7 @@ use crate::aggregation::sum_aggregation::SumAggregation;
 use crate::aggregation::terms_aggregation::TermsAggregation;
 use crate::aggregation::top_hits_aggregation::TopHitsAggregation;
 use serde_json::Value;
+use crate::aggregation::filter_aggregation::FilterAggregation;
 use crate::aggregation::nested_aggregation::NestedAggregation;
 
 pub trait AggregationTrait {
@@ -39,5 +41,8 @@ impl Aggregation {
     }
     pub fn nested(name: &str) -> NestedAggregation {
         NestedAggregation::new(name)
+    }
+    pub fn filter(name: &str) -> FilterAggregation {
+        FilterAggregation::new(name)
     }
 }
