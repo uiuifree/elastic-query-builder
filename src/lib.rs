@@ -70,6 +70,17 @@ impl QueryBuilder {
         return self;
     }
 
+    pub fn append_aggregation<T>(&mut self, query: T) -> &QueryBuilder
+        where
+            T: AggregationTrait,
+    {
+        let mut values = self.aggs.clone();
+        let mut values = serde_json::from_value::<Vec<Value>>(values).unwrap();
+        values.push(query.build());
+        self.aggs = json!(values);
+        return self;
+    }
+
     pub fn set_size(&mut self, size: i64) -> &QueryBuilder {
         self.size = size;
         return self;
