@@ -78,24 +78,27 @@ impl Serialize for TermsValue {
         }
 
         if self.order.is_some() {
-            state.serialize_field("order", &self.order.as_ref().unwrap())?;
+            let order = self.order.clone().unwrap();
+            let name = order.order_field;
+            let value = order.order_value;
+            state.serialize_field("order", &json!({name:value}))?;
         }
         state.end()
     }
 }
-
-impl Serialize for MultiTermsOrder {
-    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
-    {
-        let mut state = serializer.serialize_struct("MultiTermsOrder", 0)?;
-
-        state.serialize_field("order_field", &self.order_field)?;
-        state.serialize_field("order_value", &self.order_value)?;
-        state.end()
-    }
-}
+//
+// impl Serialize for MultiTermsOrder {
+//     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
+//     where
+//         S: Serializer,
+//     {
+//         let mut state = serializer.serialize_struct("MultiTermsOrder", 0)?;
+//
+//         state.serialize_field("order_field", &self.order_field)?;
+//         state.serialize_field("order_value", &self.order_value)?;
+//         state.end()
+//     }
+// }
 
 impl Serialize for MultiTermsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
@@ -150,7 +153,7 @@ mod tests {
                 "field_name1".to_string(),
                 "field_name2".to_string()
             ])
-            .set_order("key","val")
+            .set_order("_key","asc")
 ;
 
         let json = agg.build();
