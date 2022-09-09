@@ -1,11 +1,11 @@
-mod max_aggregation;
-mod min_aggregation;
-mod sum_aggregation;
-mod terms_aggregation;
-mod top_hits_aggregation;
-mod nested_aggregation;
-mod filter_aggregation;
-mod multi_terms_aggregation;
+pub mod max_aggregation;
+pub mod min_aggregation;
+pub mod sum_aggregation;
+pub mod terms_aggregation;
+pub mod top_hits_aggregation;
+pub mod nested_aggregation;
+pub mod filter_aggregation;
+pub mod multi_terms_aggregation;
 
 use crate::aggregation::max_aggregation::MaxAggregation;
 use crate::aggregation::min_aggregation::MinAggregation;
