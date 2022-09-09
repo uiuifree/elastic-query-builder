@@ -75,9 +75,12 @@ impl QueryBuilder {
             T: AggregationTrait,
     {
         let mut values = self.aggs.clone();
-        let mut values = serde_json::from_value::<Vec<Value>>(values).unwrap();
-        values.push(query.build());
+
+        let mut values = serde_json::from_value::<Value>(values).unwrap();
+        merge(&mut values, &query.build());
+
         self.aggs = json!(values);
+        println!("{:?}",self.aggs);
         return self;
     }
 
