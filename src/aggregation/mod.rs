@@ -19,6 +19,7 @@ use crate::aggregation::cardinality_aggregation::CardinalityAggregation;
 use crate::aggregation::filter_aggregation::FilterAggregation;
 use crate::aggregation::multi_terms_aggregation::MultiTermsAggregation;
 use crate::aggregation::nested_aggregation::NestedAggregation;
+use crate::aggregation::stats_aggregation::StatsAggregation;
 
 pub trait AggregationTrait {
     fn name(&self) -> &str;
@@ -43,6 +44,9 @@ impl Aggregation {
     }
     pub fn sum(name: &str) -> SumAggregation {
         SumAggregation::new(name)
+    }
+    pub fn stats(name: &str) -> StatsAggregation {
+        StatsAggregation::new(name)
     }
     pub fn max(name: &str) -> MaxAggregation {
         MaxAggregation::new(name)
