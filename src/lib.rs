@@ -74,7 +74,7 @@ impl QueryBuilder {
         where
             T: AggregationTrait,
     {
-        let mut values = self.aggs.clone();
+        let  values = self.aggs.clone();
 
         let mut values = serde_json::from_value::<Value>(values).unwrap();
         merge(&mut values, &query.build());
