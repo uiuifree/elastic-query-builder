@@ -10,6 +10,7 @@ pub mod term_query;
 pub mod terms_query;
 pub mod wildcard_query;
 pub mod nested;
+pub mod script_query;
 
 pub trait QueryTrait {
     fn build(&self) -> Value;
