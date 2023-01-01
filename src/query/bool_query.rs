@@ -37,7 +37,7 @@ impl BoolQuery {
     pub fn add_filter<T>(&mut self, value: T)
         where
             T: QueryTrait, {
-        self.filter.push(value);
+        self.filter.push(value.build());
     }
     pub fn is_empty(&self) -> bool {
         self.must.is_empty()
