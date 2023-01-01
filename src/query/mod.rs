@@ -11,6 +11,8 @@ pub mod terms_query;
 pub mod wildcard_query;
 pub mod nested;
 pub mod script_query;
+pub mod script_score_query;
+pub mod match_all_query;
 
 pub trait QueryTrait {
     fn build(&self) -> Value;

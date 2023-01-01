@@ -1,10 +1,15 @@
+use std::collections::HashMap;
+use serde::{Serialize, Serializer};
+use serde::ser::SerializeStruct;
 use crate::query::QueryTrait;
-use serde_json::{json, Value};
+use serde_json::{json, Map, Value};
+use crate::util::UtilMap;
 
 #[derive(Default)]
 pub struct MatchQuery {
     field: String,
     query: String,
+    boost: Option<f64>,
 }
 
 impl MatchQuery {
@@ -14,23 +19,30 @@ impl MatchQuery {
         value.query = query.to_string();
         return value;
     }
+    pub fn set_boost(mut self, boost: f64) -> MatchQuery {
+        self.boost = Some(boost);
+        self
+    }
 }
+
 
 impl QueryTrait for MatchQuery {
     fn build(&self) -> Value {
-        let field = self.field.to_string();
-        let query = self.query.to_string();
-        let name = self.query_name();
-        json!({
-            name:{
-                field:{
-                    "query":query
-                }
-            }
-        })
-    }
+        let mut query = UtilMap::new();
+        query.append_string("query",self.query.to_string());
+        query.append_boost(self.boost);
 
+        let mut root = UtilMap::new();
+        root.append_object(self.field.to_string(),query);
+        root.build_object(self.query_name())
+    }
     fn query_name(&self) -> String {
         return "match".to_string();
     }
+}
+
+#[test]
+fn test() {
+    let build = MatchQuery::new("title", "elastic").set_boost(100.0);
+    assert_eq!("{\"match\":{\"title\":{\"boost\":100.0,\"query\":\"elastic\"}}}", build.build().to_string());
 }

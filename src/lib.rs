@@ -8,6 +8,7 @@ use serde_json::{json, Value};
 
 pub mod aggregation;
 pub mod query;
+pub(crate) mod util;
 
 // #[macro_use]
 extern crate serde_derive;
