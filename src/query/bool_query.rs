@@ -17,24 +17,26 @@ impl BoolQuery {
         BoolQuery::default()
     }
     pub fn add_must<T>(&mut self, value: T)
-    where
-        T: QueryTrait,
+        where
+            T: QueryTrait,
     {
         self.must.push(value.build());
     }
     pub fn add_must_not<T>(&mut self, value: T)
-    where
-        T: QueryTrait,
+        where
+            T: QueryTrait,
     {
         self.must_not.push(value.build());
     }
     pub fn add_should<T>(&mut self, value: T)
-    where
-        T: QueryTrait,
+        where
+            T: QueryTrait,
     {
         self.should.push(value.build());
     }
-    pub fn add_filter(&mut self, value: Value) {
+    pub fn add_filter<T>(&mut self, value: T)
+        where
+            T: QueryTrait, {
         self.filter.push(value);
     }
     pub fn is_empty(&self) -> bool {
@@ -47,8 +49,8 @@ impl BoolQuery {
 
 impl Serialize for BoolQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         if !self.must.is_empty() {
