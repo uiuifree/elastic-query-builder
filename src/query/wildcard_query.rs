@@ -42,5 +42,5 @@ impl QueryTrait for WildcardQuery {
 #[test]
 fn test() {
     let build = WildcardQuery::new("title", "elastic").set_boost(100.0);
-    assert_eq!("{\"match\":{\"title\":{\"boost\":100.0,\"query\":\"elastic\"}}}", build.build().to_string());
+    assert_eq!("{\"wildcard\":{\"title\":{\"boost\":100.0,\"value\":\"elastic\"}}}", build.build().to_string());
 }
