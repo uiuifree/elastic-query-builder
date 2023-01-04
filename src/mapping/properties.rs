@@ -9,7 +9,7 @@ pub struct MappingProperties {
 }
 
 impl MappingProperties {
-    pub(crate) fn new() -> Self where Self: Sized {
+    pub fn new() -> Self where Self: Sized {
         MappingProperties::default()
     }
     pub fn add_property<T>(&mut self, key: &str, value: T) -> &mut MappingProperties
