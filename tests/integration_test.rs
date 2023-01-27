@@ -18,7 +18,7 @@ pub fn case01() {
 pub fn case02() {
     let mut builder = QueryBuilder::new();
     let filter = Aggregation::filter("filter").set_filter(MatchQuery::new("key", "value"));
-    let agg = Aggregation::nested("name").set_path("city").set_aggregation(filter);
+    let agg = Aggregation::nested("name").set_path("city").append_aggregation(filter);
     builder.set_aggregation(vec![
         agg
     ]);
