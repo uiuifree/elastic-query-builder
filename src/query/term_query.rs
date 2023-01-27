@@ -1,10 +1,13 @@
 use crate::query::QueryTrait;
 use serde_json::{json, Value};
+use crate::util::UtilMap;
 
 #[derive(Default)]
 pub struct TermQuery {
     field: String,
     value: String,
+    boost: Option<f64>,
+
 }
 
 impl TermQuery {
@@ -14,16 +17,25 @@ impl TermQuery {
         query.value = value.to_string();
         return query;
     }
+    pub fn set_boost(mut self, boost: f64) -> TermQuery {
+        self.boost = Some(boost);
+        self
+    }
 }
 
 impl QueryTrait for TermQuery {
     fn build(&self) -> Value {
-        let field = self.field.to_string();
-        let query = self.value.to_string();
-        json!({ field: query })
+        let mut query = UtilMap::new();
+        query.append_string("value", self.value.to_string());
+        query.append_boost(self.boost);
+
+        let mut root = UtilMap::new();
+        root.append_object(self.field.to_string(), query);
+        root.build_object(self.query_name())
     }
 
     fn query_name(&self) -> String {
         return "term".to_string();
     }
 }
+
