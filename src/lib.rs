@@ -82,7 +82,6 @@ impl QueryBuilder {
         merge(&mut values, &query.build());
 
         self.aggs = json!(values);
-        println!("{:?}",self.aggs);
         return self;
     }
 
@@ -160,7 +159,7 @@ impl Serialize for QueryBuilder {
     }
 }
 
-fn merge(a: &mut Value, b: &Value) {
+pub(crate) fn merge(a: &mut Value, b: &Value) {
     match (a, b) {
         (&mut Value::Object(ref mut a), &Value::Object(ref b)) => {
             for (k, v) in b {

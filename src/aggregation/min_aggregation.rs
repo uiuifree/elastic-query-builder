@@ -2,6 +2,7 @@ use crate::aggregation::AggregationTrait;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
+use crate::merge;
 
 #[derive(Default)]
 pub struct MinAggregation {
@@ -44,6 +45,15 @@ impl MinAggregation {
     {
         self.aggregation = aggregation.build();
         self
+    }
+    pub fn append_aggregation<T>(mut self, query: T) -> Self
+        where
+            T: AggregationTrait,
+    {
+        let mut values = self.aggregation.clone();
+        merge(&mut values, &query.build());
+        self.aggregation = json!(values);
+        return self;
     }
 }
 

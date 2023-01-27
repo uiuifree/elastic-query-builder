@@ -2,7 +2,9 @@ use crate::aggregation::AggregationTrait;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::QueryTrait;
+use crate::{merge, QueryTrait};
+use crate::aggregation::stats_aggregation::StatsAggregation;
+use crate::aggregation::terms_aggregation::TermsAggregation;
 
 #[derive(Default)]
 pub struct FilterAggregation {
@@ -20,20 +22,21 @@ impl FilterAggregation {
         }
     }
 
-    pub fn set_filter<T>(mut self, value: T)-> Self
+    pub fn set_filter<T>(mut self, value: T) -> Self
         where
             T: QueryTrait,
     {
         self.filter = value.build();
         self
-
     }
-    pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
+    pub fn append_aggregation<T>(mut self, query: T) -> Self
         where
             T: AggregationTrait,
     {
-        self.aggregation = aggregation.build();
-        self
+        let mut values = self.aggregation.clone();
+        merge(&mut values, &query.build());
+        self.aggregation = json!(values);
+        return self;
     }
 }
 
@@ -69,3 +72,15 @@ impl AggregationTrait for FilterAggregation {
     }
 }
 
+
+#[test]
+fn test() {
+    let build = FilterAggregation::new("title")
+        .append_aggregation(
+            TermsAggregation::new("A").set_field("A_1"),
+        )
+        .append_aggregation(
+            TermsAggregation::new("B").set_field("B_1"),
+        );
+    assert_eq!("{\"title\":{\"aggs\":{\"A\":{\"terms\":{\"field\":\"A_1\",\"size\":10}},\"B\":{\"terms\":{\"field\":\"B_1\",\"size\":10}}}}}", build.build().to_string());
+}
