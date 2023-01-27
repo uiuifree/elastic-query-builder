@@ -9,6 +9,6 @@ license = "MIT"
 repository="https://github.com/uiuifree/elastic-query-builder"
 
 [dependencies]
-serde = "1.0"
-serde_json = "1.0"
-serde_derive = "1.0"
+serde = "~1"
+serde_json = "~1"
+serde_derive = "~1"
