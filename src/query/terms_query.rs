@@ -1,5 +1,6 @@
 use crate::query::QueryTrait;
 use serde_json::{json, Value};
+use crate::util::UtilMap;
 
 #[derive(Default)]
 pub struct TermsQuery {
@@ -18,12 +19,30 @@ impl TermsQuery {
 
 impl QueryTrait for TermsQuery {
     fn build(&self) -> Value {
-        let field = self.field.to_string();
-        let query = self.values.clone();
-        json!({ field: query })
+        let mut map = UtilMap::new();
+        map.append_vec_string(self.field.as_str(), self.values.clone());
+        map.build_object(self.query_name())
     }
 
     fn query_name(&self) -> String {
         return "terms".to_string();
+    }
+}
+
+
+mod tests {
+    use super::*;
+    use crate::aggregation::AggregationTrait;
+    use crate::aggregation::stats_aggregation::StatsAggregation;
+    use crate::aggregation::terms_aggregation::TermsAggregation;
+
+    #[test]
+    fn test() {
+        let terms = TermsQuery::new("f",vec![
+            "value1".to_string(),
+            "value2".to_string(),
+        ]);
+        let json = terms.build();
+        assert_eq!("{\"terms\":{\"f\":[\"value1\",\"value2\"]}}",json.to_string());
     }
 }
