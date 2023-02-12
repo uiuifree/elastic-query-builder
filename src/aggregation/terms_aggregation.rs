@@ -24,8 +24,8 @@ struct TermsValue {
     field: String,
     size: i64,
     order: Option<TermsOrder>,
-    include: String,
-    exclude: String,
+    include: Vec<String>,
+    exclude: Vec<String>,
 }
 
 impl TermsAggregation {
@@ -56,17 +56,17 @@ impl TermsAggregation {
         });
         self
     }
-    pub fn set_include(mut self, include: &str) -> Self {
-        self.value.include = include.to_string();
+    pub fn set_include(mut self, include: &[&str]) -> Self {
+        self.value.include = include.iter().map(|q| q.to_string()).collect();
         self
     }
-    pub fn set_exclude(mut self, exclude: &str) -> Self {
-        self.value.exclude = exclude.to_string();
+    pub fn set_exclude(mut self, exclude: &[&str]) -> Self {
+        self.value.exclude = exclude.iter().map(|q| q.to_string()).collect();
         self
     }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-    where
-        T: AggregationTrait,
+        where
+            T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
@@ -84,8 +84,8 @@ impl TermsAggregation {
 
 impl Serialize for TermsValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsBuilder", 0)?;
 
@@ -111,8 +111,8 @@ impl Serialize for TermsValue {
 
 impl Serialize for TermsOrder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsOrder", 0)?;
 
@@ -124,8 +124,8 @@ impl Serialize for TermsOrder {
 
 impl Serialize for TermsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         state.serialize_field("terms", &self.value)?;
@@ -172,6 +172,10 @@ mod tests {
     fn test_terms_aggregation() {
         let agg = TermsAggregation::new("hoge")
             .set_field("field_name")
+            .set_include(&[
+                "field_a",
+                "field_b",
+            ])
             .set_aggregation(TermsAggregation::new("agg"));
 
         let json = agg.build();
