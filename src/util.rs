@@ -41,7 +41,7 @@ impl UtilMap {
 
         Value::Object(map)
     }
-    pub fn build(mut self) -> Value {
+    pub fn build(self) -> Value {
         Value::Object(self.map)
     }
 }

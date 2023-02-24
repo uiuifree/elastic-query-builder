@@ -8,6 +8,7 @@ pub mod filter_aggregation;
 pub mod multi_terms_aggregation;
 pub mod cardinality_aggregation;
 pub mod stats_aggregation;
+pub mod value_count_aggregation;
 
 use crate::aggregation::max_aggregation::MaxAggregation;
 use crate::aggregation::min_aggregation::MinAggregation;
