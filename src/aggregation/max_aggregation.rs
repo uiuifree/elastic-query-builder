@@ -15,6 +15,7 @@ pub struct MaxAggregation {
 struct MaxValue {
     field: String,
     script: String,
+    format: String,
     missing: i64,
 }
 
@@ -39,9 +40,13 @@ impl MaxAggregation {
         self.value.missing = missing;
         self
     }
+    pub fn set_format(mut self, fmt: &str) -> Self {
+        self.value.format = fmt.to_string();
+        self
+    }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-    where
-        T: AggregationTrait,
+        where
+            T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
@@ -59,13 +64,16 @@ impl MaxAggregation {
 
 impl Serialize for MaxValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("MaxValue", 0)?;
 
         if !self.field.is_empty() {
             state.serialize_field("field", &self.field)?;
+        }
+        if !self.format.is_empty() {
+            state.serialize_field("format", &self.format)?;
         }
         if self.missing != 0 {
             state.serialize_field("missing", &self.missing)?;
@@ -76,8 +84,8 @@ impl Serialize for MaxValue {
 
 impl Serialize for MaxAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("MaxAggregation", 0)?;
         state.serialize_field("max", &self.value)?;
