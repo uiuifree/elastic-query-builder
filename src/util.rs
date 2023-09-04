@@ -1,5 +1,4 @@
-use serde_json::{json, Map, Value};
-
+use serde_json::{Map, Value};
 
 pub(crate) struct UtilMap {
     pub map: Map<String, Value>,
@@ -26,7 +25,8 @@ impl UtilMap {
         if boost.is_none() {
             return;
         }
-        self.map.insert("boost".to_string(), Value::from(boost.unwrap()));
+        self.map
+            .insert("boost".to_string(), Value::from(boost.unwrap()));
     }
     pub fn append_object<T: Into<String>>(&mut self, key: T, map: UtilMap) {
         self.map.insert(key.into(), Value::Object(map.map));

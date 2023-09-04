@@ -1,10 +1,10 @@
+use crate::aggregation::stats_aggregation::StatsAggregation;
+use crate::aggregation::terms_aggregation::TermsAggregation;
 use crate::aggregation::AggregationTrait;
+use crate::{merge, QueryTrait};
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::{merge, QueryTrait};
-use crate::aggregation::stats_aggregation::StatsAggregation;
-use crate::aggregation::terms_aggregation::TermsAggregation;
 
 #[derive(Default)]
 pub struct FilterAggregation {
@@ -12,7 +12,6 @@ pub struct FilterAggregation {
     filter: Value,
     aggregation: Value,
 }
-
 
 impl FilterAggregation {
     pub fn new(name: &str) -> Self {
@@ -23,15 +22,15 @@ impl FilterAggregation {
     }
 
     pub fn set_filter<T>(mut self, value: T) -> Self
-        where
-            T: QueryTrait,
+    where
+        T: QueryTrait,
     {
         self.filter = value.build();
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -40,11 +39,10 @@ impl FilterAggregation {
     }
 }
 
-
 impl Serialize for FilterAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("FilterAggregation", 0)?;
         if !(self.filter.is_null() || self.filter.to_string().is_empty()) {
@@ -72,15 +70,10 @@ impl AggregationTrait for FilterAggregation {
     }
 }
 
-
 #[test]
 fn test() {
     let build = FilterAggregation::new("title")
-        .append_aggregation(
-            TermsAggregation::new("A").set_field("A_1"),
-        )
-        .append_aggregation(
-            TermsAggregation::new("B").set_field("B_1"),
-        );
+        .append_aggregation(TermsAggregation::new("A").set_field("A_1"))
+        .append_aggregation(TermsAggregation::new("B").set_field("B_1"));
     assert_eq!("{\"title\":{\"aggs\":{\"A\":{\"terms\":{\"field\":\"A_1\",\"size\":10}},\"B\":{\"terms\":{\"field\":\"B_1\",\"size\":10}}}}}", build.build().to_string());
 }

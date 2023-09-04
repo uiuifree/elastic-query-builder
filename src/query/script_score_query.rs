@@ -1,8 +1,8 @@
-use crate::query::QueryTrait;
-use serde_json::{json, Value};
 use crate::query::match_all_query::MatchAllQuery;
 use crate::query::multi_match_query::MultiMatchQuery;
+use crate::query::QueryTrait;
 use crate::util::UtilMap;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct ScriptScoreQuery {
@@ -45,9 +45,10 @@ impl QueryTrait for ScriptScoreQuery {
     }
 }
 
-
 #[test]
 fn test() {
-    let q = ScriptScoreQuery::new("doc['keywords'].length == 2").build().to_string();
+    let q = ScriptScoreQuery::new("doc['keywords'].length == 2")
+        .build()
+        .to_string();
     assert_eq!(q, "{\"script_score\":{\"query\":{\"match_all\":{}},\"script\":{\"source\":\"doc['keywords'].length == 2\"}}}")
 }

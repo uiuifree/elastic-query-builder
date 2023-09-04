@@ -1,8 +1,8 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::merge;
 
 #[derive(Default)]
 pub struct MaxAggregation {
@@ -45,15 +45,15 @@ impl MaxAggregation {
         self
     }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -64,8 +64,8 @@ impl MaxAggregation {
 
 impl Serialize for MaxValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("MaxValue", 0)?;
 
@@ -84,8 +84,8 @@ impl Serialize for MaxValue {
 
 impl Serialize for MaxAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("MaxAggregation", 0)?;
         state.serialize_field("max", &self.value)?;

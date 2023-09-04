@@ -1,26 +1,26 @@
+pub mod cardinality_aggregation;
+pub mod filter_aggregation;
 pub mod max_aggregation;
 pub mod min_aggregation;
+pub mod multi_terms_aggregation;
+pub mod nested_aggregation;
+pub mod stats_aggregation;
 pub mod sum_aggregation;
 pub mod terms_aggregation;
 pub mod top_hits_aggregation;
-pub mod nested_aggregation;
-pub mod filter_aggregation;
-pub mod multi_terms_aggregation;
-pub mod cardinality_aggregation;
-pub mod stats_aggregation;
 pub mod value_count_aggregation;
 
+use crate::aggregation::cardinality_aggregation::CardinalityAggregation;
+use crate::aggregation::filter_aggregation::FilterAggregation;
 use crate::aggregation::max_aggregation::MaxAggregation;
 use crate::aggregation::min_aggregation::MinAggregation;
+use crate::aggregation::multi_terms_aggregation::MultiTermsAggregation;
+use crate::aggregation::nested_aggregation::NestedAggregation;
+use crate::aggregation::stats_aggregation::StatsAggregation;
 use crate::aggregation::sum_aggregation::SumAggregation;
 use crate::aggregation::terms_aggregation::TermsAggregation;
 use crate::aggregation::top_hits_aggregation::TopHitsAggregation;
 use serde_json::Value;
-use crate::aggregation::cardinality_aggregation::CardinalityAggregation;
-use crate::aggregation::filter_aggregation::FilterAggregation;
-use crate::aggregation::multi_terms_aggregation::MultiTermsAggregation;
-use crate::aggregation::nested_aggregation::NestedAggregation;
-use crate::aggregation::stats_aggregation::StatsAggregation;
 
 pub trait AggregationTrait {
     fn name(&self) -> &str;

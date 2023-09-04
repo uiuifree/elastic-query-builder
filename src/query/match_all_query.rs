@@ -1,12 +1,11 @@
 use crate::query::QueryTrait;
-use serde_json::{json, Value};
 use crate::util::UtilMap;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct MatchAllQuery {
     boost: Option<f64>,
 }
-
 
 impl MatchAllQuery {
     pub fn new() -> MatchAllQuery {
@@ -21,7 +20,6 @@ impl MatchAllQuery {
 
 impl QueryTrait for MatchAllQuery {
     fn build(&self) -> Value {
-
         let mut root = UtilMap::new();
         root.append_boost(self.boost);
         root.build_object(self.query_name())
@@ -34,7 +32,10 @@ impl QueryTrait for MatchAllQuery {
 #[test]
 fn test() {
     let build = MatchAllQuery::new().set_boost(100.0);
-    assert_eq!("{\"match_all\":{\"boost\":100.0}}", build.build().to_string());
+    assert_eq!(
+        "{\"match_all\":{\"boost\":100.0}}",
+        build.build().to_string()
+    );
     let build = MatchAllQuery::new();
     assert_eq!("{\"match_all\":{}}", build.build().to_string());
 }

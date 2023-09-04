@@ -30,8 +30,8 @@ impl CardinalityAggregation {
 
 impl Serialize for CardinalityValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("CardinalityValue", 0)?;
         if !self.field.is_empty() {
@@ -44,8 +44,8 @@ impl Serialize for CardinalityValue {
 
 impl Serialize for CardinalityAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("CardinalityAggregation", 0)?;
         state.serialize_field("cardinality", &self.value)?;

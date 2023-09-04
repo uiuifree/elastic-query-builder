@@ -4,7 +4,7 @@ use serde_json::{json, Value};
 
 use crate::query::QueryTrait;
 
-#[derive(Default)]
+#[derive(Default, Debug, Clone)]
 pub struct BoolQuery {
     must: Vec<Value>,
     must_not: Vec<Value>,
@@ -17,26 +17,27 @@ impl BoolQuery {
         BoolQuery::default()
     }
     pub fn add_must<T>(&mut self, value: T)
-        where
-            T: QueryTrait,
+    where
+        T: QueryTrait,
     {
         self.must.push(value.build());
     }
     pub fn add_must_not<T>(&mut self, value: T)
-        where
-            T: QueryTrait,
+    where
+        T: QueryTrait,
     {
         self.must_not.push(value.build());
     }
     pub fn add_should<T>(&mut self, value: T)
-        where
-            T: QueryTrait,
+    where
+        T: QueryTrait,
     {
         self.should.push(value.build());
     }
     pub fn add_filter<T>(&mut self, value: T)
-        where
-            T: QueryTrait, {
+    where
+        T: QueryTrait,
+    {
         self.filter.push(value.build());
     }
     pub fn is_empty(&self) -> bool {
@@ -49,8 +50,8 @@ impl BoolQuery {
 
 impl Serialize for BoolQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         if !self.must.is_empty() {

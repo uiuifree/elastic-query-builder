@@ -1,8 +1,8 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::merge;
 
 #[derive(Default)]
 pub struct ValueCountAggregation {
@@ -35,15 +35,15 @@ impl ValueCountAggregation {
         self
     }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         merge(&mut self.aggregation, &query.build());
         self
@@ -52,8 +52,8 @@ impl ValueCountAggregation {
 
 impl Serialize for SumValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("SumValue", 0)?;
 
@@ -66,8 +66,8 @@ impl Serialize for SumValue {
 
 impl Serialize for ValueCountAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("ValueCountAggregation", 0)?;
         state.serialize_field("value_count", &self.value)?;
@@ -102,9 +102,9 @@ mod tests {
     fn test_terms_aggregation() {
         let agg = ValueCountAggregation::new("hoge").set_field("set_field");
         let json = agg.build();
-        assert_eq!(json.to_string(),"{\"hoge\":{\"value_count\":{\"field\":\"set_field\"}}}")
-
+        assert_eq!(
+            json.to_string(),
+            "{\"hoge\":{\"value_count\":{\"field\":\"set_field\"}}}"
+        )
     }
 }
-
-

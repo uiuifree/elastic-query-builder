@@ -7,9 +7,9 @@ use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
 
 pub mod aggregation;
+pub mod mapping;
 pub mod query;
 pub(crate) mod util;
-pub mod mapping;
 
 // #[macro_use]
 extern crate serde_derive;
@@ -49,8 +49,8 @@ impl QueryBuilder {
         return val;
     }
     pub fn set_query<T>(&mut self, query: T) -> &QueryBuilder
-        where
-            T: QueryTrait,
+    where
+        T: QueryTrait,
     {
         self.query = query.build();
         return self;
@@ -60,8 +60,8 @@ impl QueryBuilder {
         return self;
     }
     pub fn set_aggregation<T>(&mut self, query: Vec<T>) -> &QueryBuilder
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = Value::default();
 
@@ -73,10 +73,10 @@ impl QueryBuilder {
     }
 
     pub fn append_aggregation<T>(&mut self, query: T) -> &QueryBuilder
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
-        let  values = self.aggs.clone();
+        let values = self.aggs.clone();
 
         let mut values = serde_json::from_value::<Value>(values).unwrap();
         merge(&mut values, &query.build());
@@ -134,8 +134,8 @@ impl QueryBuilder {
 
 impl Serialize for QueryBuilder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("QueryBuilder", 0)?;
         if !self.source.is_empty() {
@@ -171,4 +171,3 @@ pub(crate) fn merge(a: &mut Value, b: &Value) {
         }
     }
 }
-

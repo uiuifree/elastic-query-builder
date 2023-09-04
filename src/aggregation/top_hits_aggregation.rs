@@ -1,9 +1,9 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
 use std::collections::HashMap;
-use crate::merge;
 
 #[derive(Default)]
 pub struct TopHitsAggregation {
@@ -48,8 +48,8 @@ impl TopHitsAggregation {
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());

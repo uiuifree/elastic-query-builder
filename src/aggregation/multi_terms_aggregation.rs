@@ -1,8 +1,8 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::merge;
 
 #[derive(Default)]
 pub struct MultiTermsAggregation {
@@ -59,8 +59,8 @@ impl MultiTermsAggregation {
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -78,7 +78,7 @@ impl Serialize for TermsValue {
 
         if self.script.is_empty() {
             let mut values = vec![];
-            for field in &self.fields{
+            for field in &self.fields {
                 values.push(json!({"field":field}))
             }
             state.serialize_field("terms", &json!(values))?;
@@ -159,12 +159,8 @@ mod tests {
     #[test]
     fn test_terms_aggregation() {
         let agg = MultiTermsAggregation::new("hoge")
-            .set_fields(vec![
-                "field_name1".to_string(),
-                "field_name2".to_string()
-            ])
-            .set_order("_key","asc")
-;
+            .set_fields(vec!["field_name1".to_string(), "field_name2".to_string()])
+            .set_order("_key", "asc");
 
         let json = agg.build();
         println!("{}", json);

@@ -1,8 +1,8 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::merge;
 
 #[derive(Default)]
 pub struct TermsAggregation {
@@ -65,15 +65,15 @@ impl TermsAggregation {
         self
     }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -84,8 +84,8 @@ impl TermsAggregation {
 
 impl Serialize for TermsValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsBuilder", 0)?;
 
@@ -111,8 +111,8 @@ impl Serialize for TermsValue {
 
 impl Serialize for TermsOrder {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsOrder", 0)?;
 
@@ -124,8 +124,8 @@ impl Serialize for TermsOrder {
 
 impl Serialize for TermsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         state.serialize_field("terms", &self.value)?;
@@ -172,10 +172,7 @@ mod tests {
     fn test_terms_aggregation() {
         let agg = TermsAggregation::new("hoge")
             .set_field("field_name")
-            .set_include(&[
-                "field_a",
-                "field_b",
-            ])
+            .set_include(&["field_a", "field_b"])
             .set_aggregation(TermsAggregation::new("agg"));
 
         let json = agg.build();

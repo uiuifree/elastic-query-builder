@@ -1,8 +1,8 @@
 use crate::query::QueryTrait;
+use crate::util::UtilMap;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::util::UtilMap;
 
 #[derive(Default)]
 pub struct MultiMatchQuery {
@@ -59,14 +59,14 @@ impl Serialize for MultiMatchQuery {
 impl QueryTrait for MultiMatchQuery {
     fn build(&self) -> Value {
         let mut root = UtilMap::new();
-        root.append_string("query",self.query.to_string());
-        root.append_vec_string("fields",self.fields.clone());
+        root.append_string("query", self.query.to_string());
+        root.append_vec_string("fields", self.fields.clone());
         root.append_boost(self.boost);
         if !self.search_type.is_empty() {
-            root.append_string("type",self.search_type.clone());
+            root.append_string("type", self.search_type.clone());
         }
         if !self.fuzziness.is_empty() {
-            root.append_string("fuzziness",self.fuzziness.clone());
+            root.append_string("fuzziness", self.fuzziness.clone());
         }
         root.build_object(self.query_name())
     }
@@ -76,10 +76,10 @@ impl QueryTrait for MultiMatchQuery {
 }
 #[test]
 fn test() {
-    let build = MultiMatchQuery::new(vec![
-        "title".to_string(),
-        "description".to_string(),
-    ], "elastic")
-        .set_boost(100.0);
+    let build = MultiMatchQuery::new(
+        vec!["title".to_string(), "description".to_string()],
+        "elastic",
+    )
+    .set_boost(100.0);
     assert_eq!("{\"multi_match\":{\"boost\":100.0,\"fields\":[\"title\",\"description\"],\"query\":\"elastic\"}}", build.build().to_string());
 }

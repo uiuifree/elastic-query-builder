@@ -1,8 +1,8 @@
 use crate::aggregation::AggregationTrait;
+use crate::merge;
 use serde::ser::SerializeStruct;
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
-use crate::merge;
 
 #[derive(Default)]
 pub struct NestedAggregation {
@@ -29,8 +29,8 @@ impl NestedAggregation {
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-        where
-            T: AggregationTrait,
+    where
+        T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -41,11 +41,10 @@ impl NestedAggregation {
 
 impl Serialize for NestedValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsBuilder", 0)?;
-
 
         if !self.path.is_empty() {
             state.serialize_field("path", &self.path)?;
@@ -56,8 +55,8 @@ impl Serialize for NestedValue {
 
 impl Serialize for NestedAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         state.serialize_field("nested", &self.value)?;
@@ -68,7 +67,6 @@ impl Serialize for NestedAggregation {
         state.end()
     }
 }
-
 
 impl AggregationTrait for NestedAggregation {
     fn name(&self) -> &str {
@@ -88,9 +86,9 @@ impl AggregationTrait for NestedAggregation {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::aggregation::AggregationTrait;
     use crate::aggregation::stats_aggregation::StatsAggregation;
     use crate::aggregation::terms_aggregation::TermsAggregation;
+    use crate::aggregation::AggregationTrait;
 
     #[test]
     fn test_nested_aggregation() {
@@ -102,8 +100,7 @@ mod tests {
         println!("{}", json);
         let agg = NestedAggregation::new("hoge")
             .set_path("path")
-            .append_aggregation(
-                TermsAggregation::new("agg1").set_field("key"))
+            .append_aggregation(TermsAggregation::new("agg1").set_field("key"))
             .append_aggregation(StatsAggregation::new("agg2").set_field("key"));
 
         let json = agg.build();

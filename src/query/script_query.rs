@@ -33,9 +33,13 @@ impl QueryTrait for ScriptQuery {
     }
 }
 
-
 #[test]
-fn test(){
-    let q = ScriptQuery::new("doc['keywords'].length == 2").build().to_string();
-    assert_eq!(q,"{\"script\":{\"script\":\"doc['keywords'].length == 2\"}}")
+fn test() {
+    let q = ScriptQuery::new("doc['keywords'].length == 2")
+        .build()
+        .to_string();
+    assert_eq!(
+        q,
+        "{\"script\":{\"script\":\"doc['keywords'].length == 2\"}}"
+    )
 }

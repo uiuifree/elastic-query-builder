@@ -12,8 +12,10 @@ pub struct NestedQuery {
 }
 
 impl NestedQuery {
-    pub fn new<T>(path: &str, query: T) -> NestedQuery where
-        T: QueryTrait {
+    pub fn new<T>(path: &str, query: T) -> NestedQuery
+    where
+        T: QueryTrait,
+    {
         NestedQuery {
             path: path.to_string(),
             query: query.build(),
@@ -24,8 +26,8 @@ impl NestedQuery {
 
 impl Serialize for NestedQuery {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut state = serializer.serialize_struct("NestedQuery", 0)?;
         let _ = state.serialize_field("path", &self.path);

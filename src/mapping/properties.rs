@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-use serde_json::Value;
 use crate::mapping::MappingTrait;
 use crate::util::UtilMap;
+use serde_json::Value;
+use std::collections::HashMap;
 
 #[derive(Default)]
 pub struct MappingProperties {
@@ -9,11 +9,16 @@ pub struct MappingProperties {
 }
 
 impl MappingProperties {
-    pub fn new() -> Self where Self: Sized {
+    pub fn new() -> Self
+    where
+        Self: Sized,
+    {
         MappingProperties::default()
     }
     pub fn add_property<T>(&mut self, key: &str, value: T) -> &mut MappingProperties
-        where T: MappingTrait + 'static {
+    where
+        T: MappingTrait + 'static,
+    {
         self.properties.insert(key.to_string(), Box::new(value));
         self
     }

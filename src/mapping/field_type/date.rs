@@ -1,6 +1,6 @@
-use serde_json::Value;
 use crate::mapping::MappingTrait;
 use crate::util::UtilMap;
+use serde_json::Value;
 
 ///  https://www.elastic.co/guide/en/elasticsearch/reference/current/binary.html
 #[derive(Default)]
@@ -13,20 +13,20 @@ pub struct DateFieldType {
 
 impl DateFieldType {
     pub fn new() -> Self {
-        DateFieldType ::default()
-    } pub fn  set_doc_values(&mut self,value:bool){
+        DateFieldType::default()
+    }
+    pub fn set_doc_values(&mut self, value: bool) {
         self.doc_values = Some(value);
     }
-    pub fn  set_format(&mut self, format:String){
+    pub fn set_format(&mut self, format: String) {
         self.format = Some(format);
     }
-    pub fn  set_index(&mut self,index:bool){
+    pub fn set_index(&mut self, index: bool) {
         self.index = Some(index);
     }
 }
 
 impl MappingTrait for DateFieldType {
-
     fn build(&self) -> Value {
         let mut map = UtilMap::new();
         map.append_string("type", self.query_name());
@@ -39,7 +39,7 @@ impl MappingTrait for DateFieldType {
 }
 
 #[test]
-fn test(){
+fn test() {
     let query = DateFieldType::new().build();
-    println!("{:?}",query)
+    println!("{:?}", query)
 }

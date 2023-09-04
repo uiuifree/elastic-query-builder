@@ -1,13 +1,12 @@
 use crate::query::QueryTrait;
-use serde_json::{json, Value};
 use crate::util::UtilMap;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct TermQuery {
     field: String,
     value: String,
     boost: Option<f64>,
-
 }
 
 impl TermQuery {
@@ -38,4 +37,3 @@ impl QueryTrait for TermQuery {
         return "term".to_string();
     }
 }
-

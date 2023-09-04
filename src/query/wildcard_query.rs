@@ -1,6 +1,6 @@
 use crate::query::QueryTrait;
-use serde_json::{json, Value};
 use crate::util::UtilMap;
+use serde_json::{json, Value};
 
 #[derive(Default)]
 pub struct WildcardQuery {
@@ -8,7 +8,6 @@ pub struct WildcardQuery {
     value: String,
     boost: Option<f64>,
 }
-
 
 impl WildcardQuery {
     pub fn new(field: &str, value: &str) -> WildcardQuery {
@@ -26,12 +25,11 @@ impl WildcardQuery {
 impl QueryTrait for WildcardQuery {
     fn build(&self) -> Value {
         let mut query = UtilMap::new();
-        query.append_string("value",self.value.to_string());
+        query.append_string("value", self.value.to_string());
         query.append_boost(self.boost);
 
-
         let mut root = UtilMap::new();
-        root.append_object(self.field.to_string(),query);
+        root.append_object(self.field.to_string(), query);
         root.build_object(self.query_name())
     }
 
@@ -42,5 +40,8 @@ impl QueryTrait for WildcardQuery {
 #[test]
 fn test() {
     let build = WildcardQuery::new("title", "elastic").set_boost(100.0);
-    assert_eq!("{\"wildcard\":{\"title\":{\"boost\":100.0,\"value\":\"elastic\"}}}", build.build().to_string());
+    assert_eq!(
+        "{\"wildcard\":{\"title\":{\"boost\":100.0,\"value\":\"elastic\"}}}",
+        build.build().to_string()
+    );
 }

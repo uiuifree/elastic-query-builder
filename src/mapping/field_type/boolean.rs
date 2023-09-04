@@ -1,6 +1,6 @@
-use serde_json::Value;
 use crate::mapping::MappingTrait;
 use crate::util::UtilMap;
+use serde_json::Value;
 
 ///  https://www.elastic.co/guide/en/elasticsearch/reference/current/binary.html
 #[derive(Default)]

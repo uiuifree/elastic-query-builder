@@ -1,8 +1,8 @@
-use serde_json::Value;
 use crate::mapping::field_type::boolean::BooleanFieldType;
-use crate::mapping::MappingTrait;
 use crate::mapping::properties::MappingProperties;
+use crate::mapping::MappingTrait;
 use crate::util::UtilMap;
+use serde_json::Value;
 
 ///  https://www.elastic.co/guide/en/elasticsearch/reference/current/binary.html
 #[derive(Default)]
@@ -12,12 +12,9 @@ pub struct NestedFieldType {
 
 impl NestedFieldType {
     pub fn new(properties: MappingProperties) -> NestedFieldType {
-        NestedFieldType {
-            properties
-        }
+        NestedFieldType { properties }
     }
 }
-
 
 impl MappingTrait for NestedFieldType {
     fn build(&self) -> Value {
@@ -43,8 +40,6 @@ impl MappingTrait for NestedFieldType {
 fn test() {
     let mut hoge = MappingProperties::new();
     hoge.add_property("img", BooleanFieldType::default());
-    let query = NestedFieldType::new(
-        hoge
-    ).build();
+    let query = NestedFieldType::new(hoge).build();
     println!("{:?}", query)
 }

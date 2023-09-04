@@ -1,6 +1,6 @@
-use serde_json::Value;
 use crate::mapping::MappingTrait;
 use crate::util::UtilMap;
+use serde_json::Value;
 
 ///  https://www.elastic.co/guide/en/elasticsearch/reference/current/binary.html
 #[derive(Default)]
@@ -9,20 +9,19 @@ pub struct KeywordFieldType {
 }
 
 impl KeywordFieldType {
- pub   fn new() -> Self {
+    pub fn new() -> Self {
         KeywordFieldType::default()
     }
-    pub fn  set_index(&mut self,index:bool){
+    pub fn set_index(&mut self, index: bool) {
         self.index = Some(index);
     }
 }
 
 impl MappingTrait for KeywordFieldType {
-
     fn build(&self) -> Value {
         let mut map = UtilMap::new();
         map.append_string("type", self.query_name());
-        if self.index.is_some(){
+        if self.index.is_some() {
             map.append_string("index", self.index.clone().unwrap().to_string());
         }
         map.build()
@@ -34,7 +33,7 @@ impl MappingTrait for KeywordFieldType {
 }
 
 #[test]
-fn test(){
+fn test() {
     let query = KeywordFieldType::new().build();
-    println!("{:?}",query)
+    println!("{:?}", query)
 }
