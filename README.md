@@ -29,15 +29,53 @@ assert_eq!!(
 
 
 # DML Query
+
+### Build Json Query
+```rust
+fn main() {
+    let mut query = QueryBuilder::new();
+    query.set_query(MatchQuery::new("field", "value"));
+    query.set_from(10);
+    query.set_size(100);
+    let value_json = query.build();
+}
 ```
-use elastic_query_builder::query::bool_query::BoolQuery;
-use elastic_query_builder::query::match_query::MatchQuery;
-use elastic_query_builder::QueryBuilder;
-use serde_json::{Value};
-let mut query = QueryBuilder::new();
-let mut bool = BoolQuery::new();
-bool.add_must(MatchQuery::new("field","value"));
-bool.add_must(MatchQuery::new("field2","value2"));
-query.set_query(bool);
-let value:Value = query.build();
+
+
+### Providing Query
+* bool_query
+* exists_query
+* geo_distance_query
+* match_all_query
+* match_query
+* multi_match_query
+* nested
+* range_query
+* script_query
+* script_score_query
+* term_query
+* terms_query
+* wildcard_query
+
+
+
+### BoolQuery Example
+```rust
+fn main() {
+    let mut query = QueryBuilder::new();
+    let mut bool = BoolQuery::new();
+    bool.add_must(MatchQuery::new("field1", "value"));
+    bool.add_must_not(MatchQuery::new("field2", "value"));
+    bool.add_should(MatchQuery::new("field3", "value"));
+    query.set_query(bool);
+}
 ```
+### Nested Example
+```rust
+fn main() {
+    let mut query = QueryBuilder::new();
+    let nested = NestedQuery::new("locations", MatchQuery::new("locations.country", "JP"));
+    query.set_query(nested);
+}
+```
+
