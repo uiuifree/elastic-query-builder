@@ -20,16 +20,17 @@ elastic-query-builder ="0.1"
 
 
 ## Mapping
-```
-let mut mapping = MappingBuilder::new();
-mapping
-    .add_property("title",KeywordFieldType::new())
-    .add_property("content",TextFieldType::new());
-assert_eq!!(
-    mapping.build().to_string(),
-    r#"{"mappings":{"properties":{"content":{"type":"text"},"title":{"type":"keyword"}}}}"#
+```rust
+fn main() {
+    let mut mapping = MappingBuilder::new();
+    mapping
+        .add_property("title", KeywordFieldType::new())
+        .add_property("content", TextFieldType::new());
+    assert_eq!(
+        mapping.build().to_string(),
+        r#"{"mappings":{"properties":{"content":{"type":"text"},"title":{"type":"keyword"}}}}"#
     );
-
+}
 ```
 
 
