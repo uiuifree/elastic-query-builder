@@ -1,5 +1,10 @@
 ## ElasticQueryBuilder
+![Crates.io](https://img.shields.io/crates/v/elastic_query_builder?style=flat-square)
+![GitHub](https://img.shields.io/github/license/openai-rs/openai-api?style=flat-square)
+
 ElasticQueryBuilder is a query builder designed to easily build ElasticSearch related DSLs.
+
+
 
 ## install
 ```toml
