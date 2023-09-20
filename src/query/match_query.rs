@@ -1,9 +1,7 @@
 use crate::query::QueryTrait;
 use crate::util::UtilMap;
-use serde::ser::SerializeStruct;
-use serde::{Serialize, Serializer};
-use serde_json::{json, Map, Value};
-use std::collections::HashMap;
+use serde::Serializer;
+use serde_json::Value;
 
 #[derive(Default)]
 pub struct MatchQuery {

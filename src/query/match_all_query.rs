@@ -1,6 +1,6 @@
 use crate::query::QueryTrait;
 use crate::util::UtilMap;
-use serde_json::{json, Value};
+use serde_json::Value;
 
 #[derive(Default)]
 pub struct MatchAllQuery {

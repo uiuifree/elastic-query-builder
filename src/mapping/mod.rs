@@ -5,8 +5,7 @@ use crate::mapping::field_type::keyword::KeywordFieldType;
 use crate::mapping::field_type::text::TextFieldType;
 use crate::mapping::properties::MappingProperties;
 use crate::util::UtilMap;
-use serde_json::{json, Value};
-use std::collections::HashMap;
+use serde_json::Value;
 
 pub trait MappingTrait {
     fn build(&self) -> Value;

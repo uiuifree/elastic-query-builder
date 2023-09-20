@@ -11,8 +11,6 @@ pub mod mapping;
 pub mod query;
 pub(crate) mod util;
 
-// #[macro_use]
-extern crate serde_derive;
 extern crate serde_json;
 
 #[derive(Default, Clone)]
