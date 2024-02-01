@@ -1,8 +1,7 @@
 use crate::query::match_all_query::MatchAllQuery;
-use crate::query::multi_match_query::MultiMatchQuery;
 use crate::query::QueryTrait;
 use crate::util::UtilMap;
-use serde_json::{json, Value};
+use serde_json::{Value};
 
 #[derive(Default)]
 pub struct ScriptScoreQuery {

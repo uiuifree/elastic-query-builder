@@ -1,6 +1,6 @@
 use crate::aggregation::AggregationTrait;
 use crate::merge;
-use serde::ser::SerializeStruct;
+use serde::ser::{SerializeMap, SerializeStruct};
 use serde::{Serialize, Serializer};
 use serde_json::{json, Value};
 
@@ -65,15 +65,15 @@ impl TermsAggregation {
         self
     }
     pub fn set_aggregation<T>(mut self, aggregation: T) -> Self
-    where
-        T: AggregationTrait,
+        where
+            T: AggregationTrait,
     {
         self.aggregation = aggregation.build();
         self
     }
     pub fn append_aggregation<T>(mut self, query: T) -> Self
-    where
-        T: AggregationTrait,
+        where
+            T: AggregationTrait,
     {
         let mut values = self.aggregation.clone();
         merge(&mut values, &query.build());
@@ -84,8 +84,8 @@ impl TermsAggregation {
 
 impl Serialize for TermsValue {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("TermsBuilder", 0)?;
 
@@ -110,22 +110,20 @@ impl Serialize for TermsValue {
 }
 
 impl Serialize for TermsOrder {
-    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where
+            S: Serializer,
     {
-        let mut state = serializer.serialize_struct("TermsOrder", 0)?;
-
-        state.serialize_field("order_field", &self.order_field)?;
-        state.serialize_field("order_value", &self.order_value)?;
-        state.end()
+        let mut map = serializer.serialize_map(Some(1))?;
+        map.serialize_entry(&self.order_field, &self.order_value)?;
+        map.end()
     }
 }
 
 impl Serialize for TermsAggregation {
     fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+        where
+            S: Serializer,
     {
         let mut state = serializer.serialize_struct("BoolQuery", 0)?;
         state.serialize_field("terms", &self.value)?;
@@ -173,6 +171,7 @@ mod tests {
         let agg = TermsAggregation::new("hoge")
             .set_field("field_name")
             .set_include(&["field_a", "field_b"])
+            .set_order("field_a","asc")
             .set_aggregation(TermsAggregation::new("agg"));
 
         let json = agg.build();

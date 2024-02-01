@@ -1,6 +1,5 @@
 use crate::query::QueryTrait;
 use crate::util::UtilMap;
-use serde::Serializer;
 use serde_json::Value;
 
 #[derive(Default)]

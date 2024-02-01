@@ -31,10 +31,6 @@ impl QueryTrait for TermsQuery {
 
 mod tests {
     use super::*;
-    use crate::aggregation::stats_aggregation::StatsAggregation;
-    use crate::aggregation::terms_aggregation::TermsAggregation;
-    use crate::aggregation::AggregationTrait;
-
     #[test]
     fn test() {
         let terms = TermsQuery::new("f", vec!["value1".to_string(), "value2".to_string()]);
