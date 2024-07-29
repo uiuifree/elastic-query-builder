@@ -14,14 +14,16 @@ pub trait MappingTrait {
 
 pub struct MappingBuilder {
     properties: MappingProperties,
-    setting: Option<Value>,
+    settings: Option<Value>,
+    aliases: Option<Value>,
 }
 
 impl MappingBuilder {
     pub fn new() -> MappingBuilder {
         MappingBuilder {
             properties: MappingProperties::new(),
-            setting: None,
+            settings: None,
+            aliases: None,
         }
     }
     pub fn add_property<T>(&mut self, key: &str, value: T) -> &mut MappingBuilder
@@ -34,14 +36,20 @@ impl MappingBuilder {
     pub fn set_properties(&mut self, properties: MappingProperties) {
         self.properties = properties;
     }
-    pub fn set_setting(&mut self, properties: Value) {
-        self.setting = Some(properties);
+    pub fn set_settings(&mut self, settings: Value) {
+        self.settings = Some(settings);
+    }
+    pub fn set_aliases(&mut self, aliases: Value) {
+        self.aliases = Some(aliases);
     }
     pub fn build(self) -> Value {
         let mut map = UtilMap::new();
         map.append_value("mappings", self.properties.build());
-        if let Some(ref setting) = self.setting {
-            map.append_value("setting", setting.clone())
+        if let Some(ref settings) = self.settings {
+            map.append_value("settings", settings.clone())
+        }
+      if let Some(ref aliases) = self.aliases {
+            map.append_value("aliases", aliases.clone())
         }
         map.build()
     }
