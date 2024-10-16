@@ -9,6 +9,7 @@ pub mod sum_aggregation;
 pub mod terms_aggregation;
 pub mod top_hits_aggregation;
 pub mod value_count_aggregation;
+pub mod reverse_nested_aggregation;
 
 use crate::aggregation::cardinality_aggregation::CardinalityAggregation;
 use crate::aggregation::filter_aggregation::FilterAggregation;

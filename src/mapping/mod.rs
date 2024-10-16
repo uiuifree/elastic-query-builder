@@ -61,7 +61,7 @@ fn test() {
     mapping
         .add_property("title", KeywordFieldType::new())
         .add_property("content", TextFieldType::new());
-    mapping.set_setting(json!({
+    mapping.set_settings(json!({
        "index.lifecycle.name": "logs_policy"
     }));
     println!("{}", mapping.build().to_string())
